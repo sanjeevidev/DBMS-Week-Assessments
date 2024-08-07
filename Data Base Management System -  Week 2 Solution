@@ -1,0 +1,35 @@
+CREATE TABLE Mountain(MountainName char(10),Altitude int,StateName varchar);
+INSERT INTO Mountain Values('Kangchen',8586,'Sikkim');
+INSERT INTO Mountain Values('Kabru',7338,'Sikkim');
+INSERT INTO Mountain Values('Pandim',6888,'Sikkim');
+INSERT INTO Mountain Values('Nanda',7816,'Uttarkand');
+INSERT INTO Mountain Values('Trisul',7120,'Uttarkand');
+INSERT INTO Mountain Values('Kamet',7756,'Uttarkand');
+INSERT INTO Mountain Values('Sandakfu',3636,'WestBengal');
+SELECT MountainName,Altitude FROM Mountain md1 WHERE Altitude=(SELECT MAX(Altitude) FROM Mountain md2 WHERE md1.StateName=md2.StateName);
+SELECT MountainName,Altitude FROM Mountain WHERE Altitude > (SELECT Altitude FROM Mountain WHERE StateName ='Uttarkand');
+
+CREATE TABLE UserDetails(SenderID varchar,ReceiverID varchar,TotalText int,Address varchar);
+INSERT INTO UserDetails Values('R001','S001',1000,'Kolkata');
+INSERT INTO UserDetails Values('R002','S003',1200,'Delhi');
+INSERT INTO UserDetails Values('R001','S002',500,'Kolkata');
+INSERT INTO UserDetails Values('R003','S004',700,'Kolkata');
+INSERT INTO UserDetails Values('R004','S004',1700,'Mumbai');
+SELECT * FROM UserDetails WHERE Address IN ('Delhi','Mumbai');
+CREATE INDEX ViewUserDetails ON UserDetails(SenderID,Address);
+SELECT SenderID,ReceiverID,Address FROM UserDetails WHERE TotalText BETWEEN (700,1200);
+
+DROP TABLE Orders;
+
+CREATE TABLE UserDetails(SenderID varchar,Address varchar);
+INSERT INTO UserDetails Values('R001','Kolkata');
+INSERT INTO UserDetails Values('R002','Delhi');
+INSERT INTO UserDetails Values('R003','Kolkata');
+----------------------------------------------------------                                    
+CREATE TABLE ChatDetails(SenderID varchar,ReceiverID varchar,TotalText int);
+INSERT INTO ChatDetails Values('R001','S001',1000);
+INSERT INTO ChatDetails Values('R002','S003',1200);
+INSERT INTO ChatDetails Values('R001','S002',500);
+INSERT INTO ChatDetails Values('R003','S004',700);
+SELECT COUNT(Address) FROM ChatDetails,UserDetails GROUP BY Address;
+SELECT * FROM ChatDetails EQUI JOIN UserDetails ON ChatDetails.SenderID=UserDetails.SenderID;
